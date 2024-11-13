@@ -14,6 +14,15 @@
       height: 100%;
       overflow: hidden;
     }
+    
+    /* Обеспечение полного экрана при любой ориентации устройства */
+    #scene {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+    }
   </style>
 </head>
 <body>
@@ -21,8 +30,8 @@
   <input type="file" id="imageFile" accept="image/*">
   <button onclick="loadPanorama()">Загрузить</button>
 
-  <!-- A-Frame сцена -->
-  <a-scene id="scene" embedded>
+  <!-- A-Frame сцена без VR интерфейса -->
+  <a-scene id="scene" embedded vr-mode-ui="enabled: false">
     <a-sky id="sky" src="" rotation="0 -130 0"></a-sky>
   </a-scene>
 
@@ -41,7 +50,7 @@
         const sky = document.getElementById('sky');
         sky.setAttribute('src', event.target.result); // Устанавливаем изображение на сферу
 
-        // Скроем элементы управления, чтобы панорама выглядела как полноэкранная
+        // Скрываем интерфейс для "полноэкранного" эффекта
         document.querySelector('h1').style.display = 'none';
         document.querySelector('input').style.display = 'none';
         document.querySelector('button').style.display = 'none';
