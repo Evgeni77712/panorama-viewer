@@ -45,27 +45,6 @@
       flex-direction: column;
       gap: 10px;
     }
-
-    /* Иконка для полноэкранного режима */
-    #fullscreenButton {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background-color: rgba(0, 0, 0, 0.5);
-      border: none;
-      cursor: pointer;
-      z-index: 1000;
-      fill: white;
-      padding: 0;
-    }
-
-    #fullscreenButton svg {
-      width: 100%;
-      height: 100%;
-    }
   </style>
 </head>
 <body>
@@ -75,18 +54,6 @@
     <input type="file" id="imageFile" accept="image/*">
     <button onclick="loadPanorama()">Загрузить</button>
   </div>
-
-  <!-- Кнопка для переключения полноэкранного режима -->
-  <button id="fullscreenButton" onclick="toggleFullScreen()">
-    <!-- Иконка для полноэкранного режима -->
-    <svg id="enterIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M6 16h2v2H6v-2zm0-8h2V6H6v2zm12 8h2v2h-2v-2zm0-8h2V6h-2v2zM8 18h8v2H8v-2zm0-12h8v2H8V6z"/>
-    </svg>
-    <!-- Иконка для выхода из полноэкранного режима, по умолчанию скрыта -->
-    <svg id="exitIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M18 16h2v2h-2v-2zM6 16h2v2H6v-2zm0-8h2V6H6v2zm12-2v2h2V6h-2zM8 6h8V4H8v2zm8 12H8v2h8v-2z"/>
-    </svg>
-  </button>
 
   <!-- Контейнер для панорамы -->
   <div id="panorama-container">
@@ -122,40 +89,9 @@
 
         // Скрываем интерфейс после загрузки изображения
         document.getElementById('interface').style.display = 'none';
-
-        // Показать кнопку "На весь экран"
-        document.getElementById('fullscreenButton').style.display = 'block';
       };
 
       reader.readAsDataURL(file);
-    }
-
-    function toggleFullScreen() {
-      const panoramaContainer = document.getElementById('panorama-container');
-      const enterIcon = document.getElementById('enterIcon');
-      const exitIcon = document.getElementById('exitIcon');
-
-      if (panoramaContainer.style.position !== 'fixed') {
-        // Включить псевдополноэкранный режим
-        panoramaContainer.style.position = 'fixed';
-        panoramaContainer.style.top = '0';
-        panoramaContainer.style.left = '0';
-        panoramaContainer.style.width = '100vw';
-        panoramaContainer.style.height = '100vh';
-
-        // Показать иконку выхода из полноэкранного режима
-        enterIcon.style.display = 'none';
-        exitIcon.style.display = 'block';
-      } else {
-        // Выйти из полноэкранного режима
-        panoramaContainer.style.position = 'relative';
-        panoramaContainer.style.width = '100%';
-        panoramaContainer.style.height = '100vh';
-
-        // Показать иконку для входа в полноэкранный режим
-        enterIcon.style.display = 'block';
-        exitIcon.style.display = 'none';
-      }
     }
   </script>
 </body>
