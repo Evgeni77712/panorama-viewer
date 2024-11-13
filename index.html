@@ -2,17 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>360° Панорама с A-Frame</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <style>
+    /* Стили для захвата всего экрана */
+    body, html, #scene {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <h1>Загрузите 360° изображение</h1>
   <input type="file" id="imageFile" accept="image/*">
-  <button onclick="loadPanorama()">Загрузить и перейти в полноэкранный режим</button>
+  <button onclick="loadPanorama()">Загрузить</button>
 
   <!-- A-Frame сцена -->
-  <a-scene id="scene" embedded vr-mode-ui="enabled: true">
+  <a-scene id="scene" embedded>
     <a-sky id="sky" src="" rotation="0 -130 0"></a-sky>
   </a-scene>
 
@@ -31,15 +41,10 @@
         const sky = document.getElementById('sky');
         sky.setAttribute('src', event.target.result); // Устанавливаем изображение на сферу
 
-        // Переход в полноэкранный режим
-        const scene = document.getElementById('scene');
-        if (scene.requestFullscreen) {
-          scene.requestFullscreen();
-        } else if (scene.webkitRequestFullscreen) { /* Safari */
-          scene.webkitRequestFullscreen();
-        } else if (scene.msRequestFullscreen) { /* IE11 */
-          scene.msRequestFullscreen();
-        }
+        // Скроем элементы управления, чтобы панорама выглядела как полноэкранная
+        document.querySelector('h1').style.display = 'none';
+        document.querySelector('input').style.display = 'none';
+        document.querySelector('button').style.display = 'none';
       };
 
       reader.onerror = function() {
