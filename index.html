@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>360° Панорама</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
+  <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
+</head>
+<body>
+  <h1>Просмотр 360° Панорамы</h1>
+  <div>
+    <input type="file" id="imageFile" accept="image/*">
+    <button onclick="loadPanorama()">Загрузить</button>
+    <button onclick="toggleFullScreen()">Полноэкранный режим</button>
+  </div>
+  <div id="panorama" style="width: 100%; height: 500px; margin-top: 10px;"></div>
+
+  <script>
+    function loadPanorama() {
+      const fileInput = document.getElementById('imageFile');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Пожалуйста, выберите изображение!");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        pannellum.viewer('panorama', {
+          type: 'equirectangular',
+          panorama: event.target.result,
+          autoLoad: true,
+          showControls: true,
+        });
+      };
+
+      reader.onerror = function() {
+        console.error("Ошибка при чтении файла:", reader.error);
+        alert("Не удалось прочитать файл.");
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function toggleFullScreen() {
+      const viewer = document.getElementById('panorama');
+      if (!document.fullscreenElement) {
+        viewer.requestFullscreen().catch(err => {
+          alert(`Ошибка переключения в полноэкранный режим: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>
