@@ -6,13 +6,24 @@
   <title>360° Панорама</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
   <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
+  <style>
+    /* Полноэкранный стиль для элемента панорамы */
+    #panorama.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+    }
+  </style>
 </head>
 <body>
   <h1>Просмотр 360° Панорамы</h1>
   <div>
     <input type="file" id="imageFile" accept="image/*">
     <button onclick="loadPanorama()">Загрузить</button>
-    <button onclick="toggleFullScreen()">Полноэкранный режим</button>
+    <button onclick="toggleFullScreenCSS()">Полноэкранный режим</button>
   </div>
   <div id="panorama" style="width: 100%; height: 500px; margin-top: 10px;"></div>
 
@@ -47,27 +58,10 @@
       reader.readAsDataURL(file);
     }
 
-    function toggleFullScreen() {
-      const doc = document.documentElement;
-      if (!document.fullscreenElement) {
-        // Запрос на активацию полноэкранного режима
-        if (doc.requestFullscreen) {
-          doc.requestFullscreen();
-        } else if (doc.webkitRequestFullscreen) { /* Safari */
-          doc.webkitRequestFullscreen();
-        } else if (doc.msRequestFullscreen) { /* IE11 */
-          doc.msRequestFullscreen();
-        }
-      } else {
-        // Выход из полноэкранного режима
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
-          document.msExitFullscreen();
-        }
-      }
+    function toggleFullScreenCSS() {
+      const panoramaElement = document.getElementById('panorama');
+      panoramaElement.classList.toggle('fullscreen'); // Переключаем класс для полноэкранного режима
+      document.body.classList.toggle('no-scroll'); // Отключаем прокрутку страницы
     }
   </script>
 </body>
