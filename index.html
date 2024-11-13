@@ -54,6 +54,7 @@
       font-size: 16px;
       border: none;
       cursor: pointer;
+      z-index: 1000;
     }
   </style>
 </head>
@@ -63,8 +64,9 @@
     <h1>Загрузите 360° изображение</h1>
     <input type="file" id="imageFile" accept="image/*">
     <button onclick="loadPanorama()">Загрузить</button>
-    <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
   </div>
+
+  <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
 
   <!-- Контейнер для панорамы -->
   <div id="panorama-container">
@@ -97,6 +99,9 @@
           panorama: imageSrc,
           autoLoad: true
         });
+
+        // Скрываем интерфейс после загрузки изображения
+        document.getElementById('interface').style.display = 'none';
 
         // Показать кнопку "На весь экран"
         document.getElementById('fullscreenButton').style.display = 'block';
