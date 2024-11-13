@@ -84,13 +84,15 @@
     function toggleFullScreen() {
       const scene = document.getElementById('scene');
       
-      if (!document.fullscreenElement) {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
         if (scene.requestFullscreen) {
           scene.requestFullscreen();
         } else if (scene.webkitRequestFullscreen) { /* Safari */
           scene.webkitRequestFullscreen();
         } else if (scene.msRequestFullscreen) { /* IE11 */
           scene.msRequestFullscreen();
+        } else {
+          alert("Полноэкранный режим не поддерживается в этом браузере.");
         }
       } else {
         if (document.exitFullscreen) {
