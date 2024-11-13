@@ -6,7 +6,7 @@
   <title>360° Панорама с A-Frame</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <style>
-    /* Стили для захвата всего экрана */
+    /* Основные стили для страницы */
     body, html {
       margin: 0;
       padding: 0;
@@ -15,22 +15,19 @@
       overflow: hidden;
     }
 
+    /* Стиль для сцены, чтобы занимала всю область экрана */
     #scene {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 100vw;
       height: 100vh;
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 1000;
       background-color: black;
     }
 
-    /* Стили для полноэкранной кнопки */
+    /* Кнопка полноэкранного режима */
     #fullscreenButton {
-      display: none; /* Скрыта по умолчанию */
+      display: none; /* Скрыта по умолчанию, будет показана после загрузки изображения */
       position: fixed;
       top: 10px;
       right: 10px;
@@ -52,7 +49,7 @@
 
   <!-- A-Frame сцена -->
   <a-scene id="scene" embedded vr-mode-ui="enabled: false">
-    <a-sky id="sky" src="" rotation="0 -130 0"></a-sky>
+    <a-sky id="sky" src=""></a-sky>
   </a-scene>
 
   <script>
@@ -70,12 +67,12 @@
         const sky = document.getElementById('sky');
         sky.setAttribute('src', event.target.result); // Устанавливаем изображение на сферу
 
-        // Скрываем элементы интерфейса только после успешной загрузки изображения
+        // Скрываем элементы интерфейса после успешной загрузки изображения
         document.querySelector('h1').style.display = 'none';
         document.querySelector('input').style.display = 'none';
         document.querySelector('button[onclick="loadPanorama()"]').style.display = 'none';
 
-        // Показываем кнопку полноэкранного режима после загрузки изображения
+        // Показываем кнопку полноэкранного режима
         document.getElementById('fullscreenButton').style.display = 'block';
       };
 
@@ -90,12 +87,15 @@
     function enterPseudoFullScreen() {
       const scene = document.getElementById('scene');
       
-      // Растягиваем сцену на весь экран
+      // Увеличиваем сцену на весь экран
       scene.style.width = '100vw';
       scene.style.height = '100vh';
       scene.style.position = 'fixed';
       scene.style.top = '0';
       scene.style.left = '0';
+
+      // Псевдо-полноэкранный эффект для браузера
+      window.scrollTo(0, 0); // Прокрутка вверх, чтобы скрыть адресную строку на мобильных устройствах
     }
   </script>
 </body>
