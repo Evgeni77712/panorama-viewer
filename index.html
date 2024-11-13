@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>360° Панорама с A-Frame</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <title>360° Панорама с Pannellum</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
+  <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
   <style>
     body, html {
       margin: 0;
@@ -12,25 +13,26 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    #scene {
-      width: 100vw;
-      height: 100vh;
+    #panorama {
+      width: 100%;
+      height: 80vh;
     }
 
     #fullscreenButton {
       display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px;
-      background-color: rgba(0, 0, 0, 0.5);
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #333;
       color: white;
       font-size: 16px;
       border: none;
       cursor: pointer;
-      z-index: 10;
     }
   </style>
 </head>
@@ -40,12 +42,12 @@
   <button onclick="loadPanorama()">Загрузить</button>
   <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
 
-  <!-- A-Frame сцена -->
-  <a-scene id="scene" embedded vr-mode-ui="enabled: false">
-    <a-sky id="sky"></a-sky>
-  </a-scene>
+  <!-- Контейнер для панорамы -->
+  <div id="panorama"></div>
 
   <script>
+    let viewer;
+
     function loadPanorama() {
       const fileInput = document.getElementById('imageFile');
       const file = fileInput.files[0];
@@ -57,32 +59,28 @@
 
       const reader = new FileReader();
       reader.onload = function(event) {
-        const sky = document.getElementById('sky');
-        sky.setAttribute('src', event.target.result);
+        // Создаем панораму с Pannellum
+        viewer = pannellum.viewer('panorama', {
+          type: 'equirectangular',
+          panorama: event.target.result,
+          autoLoad: true
+        });
 
-        // Показываем кнопку "На весь экран"
+        // Показать кнопку "На весь экран"
         document.getElementById('fullscreenButton').style.display = 'block';
-        
-        // Скрываем элементы интерфейса после загрузки изображения
-        document.querySelector('h1').style.display = 'none';
-        document.querySelector('input').style.display = 'none';
-        document.querySelector('button[onclick="loadPanorama()"]').style.display = 'none';
       };
 
       reader.readAsDataURL(file);
     }
 
     function enterPseudoFullScreen() {
-      console.log("Псевдополноэкранный режим активирован");
-      const scene = document.getElementById('scene');
-      scene.style.width = '100vw';
-      scene.style.height = '100vh';
-      scene.style.position = 'fixed';
-      scene.style.top = '0';
-      scene.style.left = '0';
+      const panoramaContainer = document.getElementById('panorama');
 
-      window.scrollTo(0, 0); // Скрываем адресную строку
-    }
-  </script>
-</body>
-</html>
+      // Псевдополноэкранный режим
+      if (panoramaContainer.style.position !== 'fixed') {
+        panoramaContainer.style.position = 'fixed';
+        panoramaContainer.style.top = '0';
+        panoramaContainer.style.left = '0';
+        panoramaContainer.style.width = '100vw';
+        panoramaContainer.style.height = '100vh';
+        document.getElementById('fullscreenButton
