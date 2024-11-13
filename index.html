@@ -14,8 +14,7 @@
       height: 100%;
       overflow: hidden;
     }
-    
-    /* Обеспечение полного экрана при любой ориентации устройства */
+
     #scene {
       display: flex;
       align-items: center;
@@ -23,12 +22,27 @@
       height: 100vh;
       width: 100vw;
     }
+
+    /* Стили для полноэкранной кнопки */
+    #fullscreenButton {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
   <h1>Загрузите 360° изображение</h1>
   <input type="file" id="imageFile" accept="image/*">
   <button onclick="loadPanorama()">Загрузить</button>
+  <button id="fullscreenButton" onclick="toggleFullScreen()">Полноэкранный режим</button>
 
   <!-- A-Frame сцена без VR интерфейса -->
   <a-scene id="scene" embedded vr-mode-ui="enabled: false">
@@ -50,10 +64,13 @@
         const sky = document.getElementById('sky');
         sky.setAttribute('src', event.target.result); // Устанавливаем изображение на сферу
 
-        // Скрываем интерфейс для "полноэкранного" эффекта
+        // Скрываем интерфейс, чтобы создать "полноэкранный" эффект
         document.querySelector('h1').style.display = 'none';
         document.querySelector('input').style.display = 'none';
-        document.querySelector('button').style.display = 'none';
+        document.querySelector('button[onclick="loadPanorama()"]').style.display = 'none';
+
+        // Показать кнопку полноэкранного режима
+        document.getElementById('fullscreenButton').style.display = 'block';
       };
 
       reader.onerror = function() {
@@ -62,6 +79,28 @@
       };
 
       reader.readAsDataURL(file);
+    }
+
+    function toggleFullScreen() {
+      const scene = document.getElementById('scene');
+      
+      if (!document.fullscreenElement) {
+        if (scene.requestFullscreen) {
+          scene.requestFullscreen();
+        } else if (scene.webkitRequestFullscreen) { /* Safari */
+          scene.webkitRequestFullscreen();
+        } else if (scene.msRequestFullscreen) { /* IE11 */
+          scene.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msExitFullscreen();
+        }
+      }
     }
   </script>
 </body>
