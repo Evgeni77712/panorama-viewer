@@ -13,11 +13,10 @@
       height: 100%;
       overflow: hidden;
     }
-    
+
     #scene {
       width: 100vw;
       height: 100vh;
-      position: relative;
     }
 
     #fullscreenButton {
@@ -39,7 +38,7 @@
   <h1>Загрузите 360° изображение</h1>
   <input type="file" id="imageFile" accept="image/*">
   <button onclick="loadPanorama()">Загрузить</button>
-  <button id="fullscreenButton" onclick="togglePseudoFullScreen()">На весь экран</button>
+  <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
 
   <!-- A-Frame сцена -->
   <a-scene id="scene" embedded vr-mode-ui="enabled: false">
@@ -61,10 +60,10 @@
         const sky = document.getElementById('sky');
         sky.setAttribute('src', event.target.result);
 
-        // Показать кнопку "На весь экран"
+        // Показываем кнопку "На весь экран"
         document.getElementById('fullscreenButton').style.display = 'block';
         
-        // Скрыть элементы интерфейса
+        // Скрываем элементы интерфейса после загрузки изображения
         document.querySelector('h1').style.display = 'none';
         document.querySelector('input').style.display = 'none';
         document.querySelector('button[onclick="loadPanorama()"]').style.display = 'none';
@@ -73,26 +72,16 @@
       reader.readAsDataURL(file);
     }
 
-    function togglePseudoFullScreen() {
+    function enterPseudoFullScreen() {
+      console.log("Псевдополноэкранный режим активирован");
       const scene = document.getElementById('scene');
-      const button = document.getElementById('fullscreenButton');
+      scene.style.width = '100vw';
+      scene.style.height = '100vh';
+      scene.style.position = 'fixed';
+      scene.style.top = '0';
+      scene.style.left = '0';
 
-      if (scene.style.position !== 'fixed') {
-        // Включить псевдополноэкранный режим
-        scene.style.position = 'fixed';
-        scene.style.top = '0';
-        scene.style.left = '0';
-        scene.style.width = '100vw';
-        scene.style.height = '100vh';
-        button.textContent = 'Выйти из полноэкранного';
-        window.scrollTo(0, 0); // Убираем адресную строку
-      } else {
-        // Отключить псевдополноэкранный режим
-        scene.style.position = 'relative';
-        scene.style.width = '100vw';
-        scene.style.height = '100vh';
-        button.textContent = 'На весь экран';
-      }
+      window.scrollTo(0, 0); // Скрываем адресную строку
     }
   </script>
 </body>
