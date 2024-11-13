@@ -15,11 +15,11 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: flex-start;
     }
 
-    /* Контейнер для панорамы с поддержанием пропорций */
+    /* Контейнер для панорамы */
     #panorama-container {
       width: 100vw;
       height: 100vh;
@@ -35,26 +35,36 @@
       max-height: 100%;
     }
 
+    /* Блок с кнопками, закрепленный в верхнем левом углу */
+    #interface {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     #fullscreenButton {
       display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
       padding: 10px 20px;
       background-color: #333;
       color: white;
       font-size: 16px;
       border: none;
       cursor: pointer;
-      z-index: 1000;
     }
   </style>
 </head>
 <body>
-  <h1>Загрузите 360° изображение</h1>
-  <input type="file" id="imageFile" accept="image/*">
-  <button onclick="loadPanorama()">Загрузить</button>
-  <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
+  <!-- Интерфейс с кнопками, закрепленный в левом верхнем углу -->
+  <div id="interface">
+    <h1>Загрузите 360° изображение</h1>
+    <input type="file" id="imageFile" accept="image/*">
+    <button onclick="loadPanorama()">Загрузить</button>
+    <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
+  </div>
 
   <!-- Контейнер для панорамы -->
   <div id="panorama-container">
