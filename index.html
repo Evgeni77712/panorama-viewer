@@ -19,22 +19,34 @@
       justify-content: center;
     }
 
+    /* Контейнер для панорамы с поддержанием пропорций */
+    #panorama-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     #panorama {
       width: 100%;
-      height: 80vh;
-      max-width: 100vw;
-      max-height: 100vh;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
     }
 
     #fullscreenButton {
       display: none;
-      margin-top: 10px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
       padding: 10px 20px;
       background-color: #333;
       color: white;
       font-size: 16px;
       border: none;
       cursor: pointer;
+      z-index: 1000;
     }
   </style>
 </head>
@@ -45,7 +57,9 @@
   <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
 
   <!-- Контейнер для панорамы -->
-  <div id="panorama"></div>
+  <div id="panorama-container">
+    <div id="panorama"></div>
+  </div>
 
   <script>
     let viewer;
@@ -82,7 +96,7 @@
     }
 
     function enterPseudoFullScreen() {
-      const panoramaContainer = document.getElementById('panorama');
+      const panoramaContainer = document.getElementById('panorama-container');
 
       if (panoramaContainer.style.position !== 'fixed') {
         panoramaContainer.style.position = 'fixed';
@@ -90,12 +104,11 @@
         panoramaContainer.style.left = '0';
         panoramaContainer.style.width = '100vw';
         panoramaContainer.style.height = '100vh';
-        panoramaContainer.style.objectFit = 'contain'; // Сохранение пропорций
         document.getElementById('fullscreenButton').textContent = 'Выйти из полноэкранного';
       } else {
         panoramaContainer.style.position = 'relative';
         panoramaContainer.style.width = '100%';
-        panoramaContainer.style.height = '80vh';
+        panoramaContainer.style.height = '100vh';
         document.getElementById('fullscreenButton').textContent = 'На весь экран';
       }
     }
