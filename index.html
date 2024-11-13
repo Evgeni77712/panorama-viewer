@@ -3,41 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>360° Панорама</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
-  <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
-  <style>
-    /* Убираем отступы и делаем панораму на весь экран */
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden; /* Отключаем прокрутку страницы */
-    }
-    #panorama.fullscreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    /* Убираем прокрутку в полноэкранном режиме */
-    .no-scroll {
-      overflow: hidden;
-    }
-  </style>
+  <title>360° Панорама с A-Frame</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 <body>
-  <h1>Просмотр 360° Панорамы</h1>
-  <div>
-    <input type="file" id="imageFile" accept="image/*">
-    <button onclick="loadPanorama()">Загрузить</button>
-    <button onclick="toggleFullScreenCSS()">Полноэкранный режим</button>
-  </div>
-  <div id="panorama" style="width: 100%; height: 500px; margin-top: 10px;"></div>
+  <h1>Загрузите 360° изображение</h1>
+  <input type="file" id="imageFile" accept="image/*">
+  <button onclick="loadPanorama()">Загрузить и перейти в полноэкранный режим</button>
+
+  <!-- A-Frame сцена -->
+  <a-scene id="scene" embedded vr-mode-ui="enabled: true">
+    <a-sky id="sky" src="" rotation="0 -130 0"></a-sky>
+  </a-scene>
 
   <script>
     function loadPanorama() {
@@ -50,16 +27,19 @@
       }
 
       const reader = new FileReader();
-
       reader.onload = function(event) {
-        pannellum.viewer('panorama', {
-          type: 'equirectangular',
-          panorama: event.target.result,
-          autoLoad: true,
-          showControls: true,
-          keyboardZoom: false,
-          mouseZoom: true
-        });
+        const sky = document.getElementById('sky');
+        sky.setAttribute('src', event.target.result); // Устанавливаем изображение на сферу
+
+        // Переход в полноэкранный режим
+        const scene = document.getElementById('scene');
+        if (scene.requestFullscreen) {
+          scene.requestFullscreen();
+        } else if (scene.webkitRequestFullscreen) { /* Safari */
+          scene.webkitRequestFullscreen();
+        } else if (scene.msRequestFullscreen) { /* IE11 */
+          scene.msRequestFullscreen();
+        }
       };
 
       reader.onerror = function() {
@@ -68,12 +48,6 @@
       };
 
       reader.readAsDataURL(file);
-    }
-
-    function toggleFullScreenCSS() {
-      const panoramaElement = document.getElementById('panorama');
-      panoramaElement.classList.toggle('fullscreen'); // Переключаем класс для полноэкранного режима
-      document.body.classList.toggle('no-scroll'); // Отключаем прокрутку страницы
     }
   </script>
 </body>
