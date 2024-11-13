@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>360° Панорама с A-Frame</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <style>
-    /* Основные стили для страницы */
     body, html {
       margin: 0;
       padding: 0;
@@ -14,28 +13,24 @@
       height: 100%;
       overflow: hidden;
     }
-
+    
     #scene {
       width: 100vw;
       height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: black;
     }
 
-    /* Стили для кнопки */
     #fullscreenButton {
+      display: none;
       position: fixed;
       bottom: 20px;
       right: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 10px;
       background-color: rgba(0, 0, 0, 0.5);
       color: white;
+      font-size: 16px;
       border: none;
       cursor: pointer;
-      z-index: 1001;
+      z-index: 10;
     }
   </style>
 </head>
@@ -43,11 +38,10 @@
   <h1>Загрузите 360° изображение</h1>
   <input type="file" id="imageFile" accept="image/*">
   <button onclick="loadPanorama()">Загрузить</button>
-  <button id="fullscreenButton" onclick="enterPseudoFullScreen()" style="display: none;">На весь экран</button>
+  <button id="fullscreenButton" onclick="enterPseudoFullScreen()">На весь экран</button>
 
-  <!-- A-Frame сцена -->
   <a-scene id="scene" embedded vr-mode-ui="enabled: false">
-    <a-sky id="sky" src=""></a-sky>
+    <a-sky id="sky"></a-sky>
   </a-scene>
 
   <script>
@@ -65,10 +59,10 @@
         const sky = document.getElementById('sky');
         sky.setAttribute('src', event.target.result);
 
-        // Показываем кнопку полноэкранного режима после загрузки изображения
+        // Показать кнопку "На весь экран"
         document.getElementById('fullscreenButton').style.display = 'block';
-
-        // Скрываем элементы интерфейса после загрузки изображения
+        
+        // Скрыть элементы интерфейса
         document.querySelector('h1').style.display = 'none';
         document.querySelector('input').style.display = 'none';
         document.querySelector('button[onclick="loadPanorama()"]').style.display = 'none';
@@ -78,15 +72,8 @@
     }
 
     function enterPseudoFullScreen() {
-      const scene = document.getElementById('scene');
-      scene.style.width = '100vw';
-      scene.style.height = '100vh';
-      scene.style.position = 'fixed';
-      scene.style.top = '0';
-      scene.style.left = '0';
-
-      // Прокрутка вверх для скрытия адресной строки на мобильных устройствах
-      window.scrollTo(0, 0);
+      document.getElementById('scene').style.width = '100vw';
+      document.getElementById('scene').style.height = '100vh';
     }
   </script>
 </body>
