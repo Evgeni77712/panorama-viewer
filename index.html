@@ -22,6 +22,8 @@
     #panorama {
       width: 100%;
       height: 80vh;
+      max-width: 100vw;
+      max-height: 100vh;
     }
 
     #fullscreenButton {
@@ -60,9 +62,7 @@
       const reader = new FileReader();
       reader.onload = function(event) {
         const imageSrc = event.target.result;
-        console.log("Загруженное изображение:", imageSrc); // Отладка
 
-        // Проверка, создали ли мы панораму
         if (viewer) {
           viewer.destroy();
         }
@@ -78,27 +78,21 @@
         document.getElementById('fullscreenButton').style.display = 'block';
       };
 
-      reader.onerror = function() {
-        console.error("Ошибка при чтении файла:", reader.error);
-        alert("Не удалось прочитать файл.");
-      };
-
       reader.readAsDataURL(file);
     }
 
     function enterPseudoFullScreen() {
       const panoramaContainer = document.getElementById('panorama');
 
-      // Псевдополноэкранный режим
       if (panoramaContainer.style.position !== 'fixed') {
         panoramaContainer.style.position = 'fixed';
         panoramaContainer.style.top = '0';
         panoramaContainer.style.left = '0';
         panoramaContainer.style.width = '100vw';
         panoramaContainer.style.height = '100vh';
+        panoramaContainer.style.objectFit = 'contain'; // Сохранение пропорций
         document.getElementById('fullscreenButton').textContent = 'Выйти из полноэкранного';
       } else {
-        // Возвращаем к исходным размерам
         panoramaContainer.style.position = 'relative';
         panoramaContainer.style.width = '100%';
         panoramaContainer.style.height = '80vh';
