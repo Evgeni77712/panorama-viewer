@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.css">
   <script src="https://cdn.jsdelivr.net/npm/pannellum/build/pannellum.js"></script>
   <style>
-    /* Полноэкранный стиль для элемента панорамы */
+    /* Убираем отступы и делаем панораму на весь экран */
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Отключаем прокрутку страницы */
+    }
     #panorama.fullscreen {
       position: fixed;
       top: 0;
@@ -15,6 +20,13 @@
       width: 100vw;
       height: 100vh;
       z-index: 9999;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    /* Убираем прокрутку в полноэкранном режиме */
+    .no-scroll {
+      overflow: hidden;
     }
   </style>
 </head>
